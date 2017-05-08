@@ -1,0 +1,26 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+  - user: 
+     name: admin1
+     shell: /bin/bash
+     append: yes
+  - name: provide password for admin1
+    shell: echo Co5aije5. | passwd --stdin admin1
+
+  - user: 
+     name: admin2
+     shell: /bin/bash
+     append: yes
+  - name: provide password for admin2
+    shell: echo Vb2AgA6J. | passwd --stdin admin1
+
+  - user: 
+     name: guess
+     shell: /bin/bash
+     append: yes
+  - name: provide password for guess
+    shell: echo GunungPadang12 | passwd --stdin guess
+

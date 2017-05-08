@@ -1,0 +1,12 @@
+
+- hosts: local
+  become: yes
+  become_method: sudo
+  tasks:
+    - include: /root/playbook/include/included.yml
+      vars:
+        general_packages: vim-enhanced,wget,unzip
+
+# include another Playbook
+- include: httpd.yml
+

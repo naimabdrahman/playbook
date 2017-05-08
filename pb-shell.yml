@@ -1,0 +1,6 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+  tasks:
+  - name: bash command
+    shell: ls -l >> /root/playbook/testfile.testfile

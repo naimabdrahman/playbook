@@ -1,0 +1,13 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+  tasks:
+  - name: file exists or not
+    shell: test -f /root/testfile.test
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: put file
+    shell: echo "This is a testfile" > /root/testfile.test
+    when: file_exists.rc == 1

@@ -1,0 +1,4 @@
+- hosts: local
+  tasks:
+  - name: create testfile
+    file: path=/root/testfile state=touch owner=root group=root mode=0600 
