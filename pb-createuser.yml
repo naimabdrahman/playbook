@@ -6,21 +6,38 @@
   - user: 
      name: admin1
      shell: /bin/bash
+     groups: admin1,wheel
      append: yes
-  - name: provide password for admin1
-    shell: echo Co5aije5. | passwd --stdin admin1
 
   - user: 
      name: admin2
      shell: /bin/bash
+     groups: admin2,wheel
      append: yes
-  - name: provide password for admin2
-    shell: echo Vb2AgA6J. | passwd --stdin admin1
 
   - user: 
      name: guess
      shell: /bin/bash
      append: yes
+
+  - name: Make sure we have a 'wheel' group
+    group:
+     name=wheel
+     state=present
+
+  - name: Allow wheel group to have passwordless sudo
+    lineinfile:
+     dest: /etc/sudoers
+     state: present
+     regexp: '^%wheel'
+     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
+  - name: provide password and sudoer for admin1
+    shell: echo Co5aije5. | passwd --stdin admin1
+
+  - name: provide password and sudoer for admin2
+    shell: echo Vb2AgA6J. | passwd --stdin admin2
+
   - name: provide password for guess
     shell: echo GunungPadang12 | passwd --stdin guess
 
