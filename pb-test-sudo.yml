@@ -1,0 +1,7 @@
+- hosts: localsudo
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: test sudo
+    shell: ls -l /root > /root/playbook/testfile.testfile

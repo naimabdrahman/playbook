@@ -1,0 +1,15 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+
+  - name: sudoers file exists or not
+    shell: test -f /etc/sudoers.bckup
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: put file
+    shell:  cat  /etc/sudoers > /etc/sudoers.bckup
+    when: file_exists.rc == 1
