@@ -1,0 +1,30 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+
+  - name: checking if /etc/ssh/sshd_config exist?
+    shell: test -f /etc/ssh/sshd_config
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: create backup /etc/ssh/sshd_config if doesn't exist
+    shell: cat /etc/ssh/sshd_config >  /etc/ssh/sshd_config.bckup
+    when: file_exists.rc == 1
+
+  - name: checking if /etc/ssh/sshd_config.bckup exist?
+    shell: test -f /etc/ssh/sshd_config.bckup
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: editing entry when /etc/ssh/sshd_config.bckup exist
+    shell: cat /etc/ssh/sshd_config.bckup  | sed -e 's/\#PermitRootLogin yes/PermitRootLogin no/g' >  /etc/ssh/sshd_config
+    when: file_exists.rc == 0
+
+
+
+
+
