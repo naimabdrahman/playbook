@@ -3,28 +3,23 @@
   #become_method: sudo
 
   tasks:
-
-  - name: checking if /etc/ssh/sshd_config exist?
-    shell: test -f /etc/ssh/sshd_config
-    ignore_errors: true
-    register: file_exists
-    failed_when: file_exists.rc not in [0, 1]
-
-  - name: create backup /etc/ssh/sshd_config if doesn't exist
-    shell: cat /etc/ssh/sshd_config >  /etc/ssh/sshd_config.bckup
-    when: file_exists.rc == 1
-
-  - name: checking if /etc/ssh/sshd_config.bckup exist?
+  - name: checking if /etc/ssh/sshd_config.bckup exist
     shell: test -f /etc/ssh/sshd_config.bckup
     ignore_errors: true
-    register: file_exists
-    failed_when: file_exists.rc not in [0, 1]
+    register: sshdbackup_exists
+    failed_when: sshdbackup_exists.rc not in [0, 1]
+  - name: create /etc/ssh/sshd_config.bckup
+    shell: cat /etc/ssh/sshd_config >/etc/ssh/sshd_config.bckup
+    when: sshdbackup_exists.rc == 1
 
-  - name: editing entry when /etc/ssh/sshd_config.bckup exist
+  - name: checking if admin1 exists
+    shell: test -d /home/admin1
+    ignore_errors: true
+    register: admin1_exists
+    failed_when: admin1_exists.rc not in [0, 1]
+
+  - name: editing PermitRootLogin entry when /etc/ssh/sshd_config.bckup and admin1 exist
     shell: cat /etc/ssh/sshd_config.bckup  | sed -e 's/\#PermitRootLogin yes/PermitRootLogin no/g' >  /etc/ssh/sshd_config
-    when: file_exists.rc == 0
-
-
-
-
+    when: (sshdbackup_exists.rc == 0) and
+          (admin1_exists.rc == 0) 
 

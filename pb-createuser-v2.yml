@@ -10,18 +10,18 @@
     register: file_exists
     failed_when: file_exists.rc not in [0, 1]
 
-  - name: put file
+  - name: put file /etc/sudoers.bckup
     shell:  cat  /etc/sudoers > /etc/sudoers.bckup
     when: file_exists.rc == 1
 
-  - name: passwd backup file exist or not
+  - name: passwd bckup file exist or not
     shell: test -f /etc/passwd.bckup
     ignore_errors: true
     register: file_exists
     failed_when: file_exists.rc not in [0, 1]
 
-  - name: create passwd backup
-    shell: cat /etc/passwd > /etc/passwd.backup
+  - name: create /etc/passwd.bckup
+    shell: cat /etc/passwd > /etc/passwd.bckup
     when: file_exists.rc == 1
 
   - user: 
@@ -31,13 +31,13 @@
      append: yes
 
   - user: 
-     name: admin2
+     name: guest1
      shell: /bin/bash
      groups: wheel
      append: yes
 
   - user: 
-     name: guest
+     name: guest2
      shell: /bin/bash
      append: yes
 
@@ -56,12 +56,12 @@
   - name: provide password for admin1
     shell: echo password.  | passwd --stdin admin1
 
-  - name: provide password for admin2
-    shell: echo password   | passwd --stdin admin2
+  - name: provide password for guest1
+    shell: echo password.   | passwd --stdin guest1
 
-  - name: provide password for guest
-    shell: echo password  | passwd --stdin guest
+  - name: provide password for guest2
+    shell: echo password.  | passwd --stdin guest2
 
-  - name: locking admin2 account in default
-    shell: usermod -L admin2
+  - name: locking guest1 account in default
+    shell: usermod -L guest1
 
