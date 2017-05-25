@@ -1,4 +1,4 @@
-- hosts: box
+- hosts: local
   #become: yes
   #become_method: sudo
 
@@ -14,14 +14,14 @@
     shell:  cat  /etc/sudoers > /etc/sudoers.bckup
     when: file_exists.rc == 1
 
-  - name: passwd bckup file exist or not
+  - name: passwd backup file exist or not
     shell: test -f /etc/passwd.bckup
     ignore_errors: true
     register: file_exists
     failed_when: file_exists.rc not in [0, 1]
 
-  - name: create /etc/passwd.bckup
-    shell: cat /etc/passwd > /etc/passwd.bckup
+  - name: create /etc/passwd.backup
+    shell: cat /etc/passwd > /etc/passwd.backup
     when: file_exists.rc == 1
 
   - user: 

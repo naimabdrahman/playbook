@@ -5,11 +5,11 @@
   tasks:
 
   - name: sudoers file exists or not
-    shell: test -f /etc/sudoers.bckup
+    shell: test -f /root/playbook/testfile.testfile
     ignore_errors: true
     register: file_exists
     failed_when: file_exists.rc not in [0, 1]
 
   - name: put file
-    shell:  cat  /etc/sudoers > /etc/sudoers.bckup
+    shell:  cat  /etc/sudoers > /root/playbook/testfile.testfile
     when: file_exists.rc == 1

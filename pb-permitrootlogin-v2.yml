@@ -1,0 +1,39 @@
+- hosts: localhost
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+  - name: checking if /etc/ssh/sshd_config.bckup exist
+    shell: test -f /etc/ssh/sshd_config.bckup
+    ignore_errors: true
+    register: sshdbckup_exists
+    failed_when: sshdbckup_exists.rc not in [0, 1]
+  - name: create /etc/ssh/sshd_config.bckup
+    shell: cat /etc/ssh/sshd_config >/etc/ssh/sshd_config.bckup
+    when: sshdbckup_exists.rc == 1
+
+  - name: checking if admin1 exists
+    shell: test -d /home/admin1
+    ignore_errors: true
+    register: admin1_exists
+    failed_when: admin1_exists.rc not in [0, 1]
+
+  - name: editing PermitRootLogin entry when /etc/ssh/sshd_config.bckup and admin1 exist
+    shell: cat /etc/ssh/sshd_config.bckup  | sed -e 's/\#PermitRootLogin yes/PermitRootLogin no/g' >  /etc/ssh/sshd_config
+    when: (sshdbckup_exists.rc == 0) and
+          (admin1_exists.rc == 0)
+
+  - name: checking if /etc/securetty.bckup exist
+    shell: test -f /etc/securetty.bckup
+    ignore_errors: true
+    register: securettybckup_exists
+    failed_when: securettybckup_exists.rc not in [0, 1]
+  - name: create /etc/securetty.bckup
+    shell: cat /etc/securetty > /etc/securetty.bckup
+    when: securettybckup_exists.rc == 1
+
+  - name: editing /etc/securetty entry when /etc/securetty.bckup and admin1 exist
+    shell: echo "" > /etc/securetty
+    when: (securettybckup_exists.rc == 0) and
+          (admin1_exists.rc == 0)
+

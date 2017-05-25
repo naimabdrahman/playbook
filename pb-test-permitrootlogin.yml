@@ -1,4 +1,4 @@
-- hosts: box
+- hosts: local
   #become: yes
   #become_method: sudo
 
