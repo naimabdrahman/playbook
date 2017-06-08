@@ -49,3 +49,5 @@
     when: (securettybckupagain_exists.rc == 0) and
           (admin1_exists.rc == 0)
 
+  - name: reload sshd
+    shell: service sshd reload
