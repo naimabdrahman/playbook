@@ -1,0 +1,129 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+
+  - name: sudoers file exists or not
+    shell: test -f /etc/sudoers.bckup
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: put file /etc/sudoers.bckup
+    shell:  cat  /etc/sudoers > /etc/sudoers.bckup
+    when: file_exists.rc == 1
+
+  - name: passwd bckup file exist or not
+    shell: test -f /etc/passwd.bckup
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: create /etc/passwd.bckup
+    shell: cat /etc/passwd > /etc/passwd.bckup
+    when: file_exists.rc == 1
+
+  - user: 
+     name: admin1
+     shell: /bin/bash
+     groups: wheel
+     append: yes
+
+  - user: 
+     name: guest1
+     shell: /bin/bash
+     groups: wheel
+     append: yes
+
+  - user: 
+     name: guest2
+     shell: /bin/bash
+     append: yes
+
+  - user:
+     name: pacman
+     shell: /bin/bash
+     append: yes
+
+  - name: Make sure we have a 'wheel' group
+    group:
+     name=wheel
+     state=present
+
+  - name: checking if /etc/sudoers.bckup exist
+    shell: test -f /etc/sudoers.bckup
+    ignore_errors: true
+    register: sudoersbckup_exists
+    failed_when: sudoersbckup_exists.rc not in [0, 1]
+  - name: create /etc/sudoers.bckup
+    shell: cat /etc/sudoers > /etc/sudoers.bckup
+    when: sudoersbckup_exists.rc == 1
+
+  - name: Allow wheel group to have passwordless sudo
+    lineinfile:
+     dest: /etc/sudoers
+     state: present
+     regexp: '^%wheel'
+     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
+  - name: allow pacman to reboot and reset nic
+    lineinfile:
+     dest: /etc/sudoers
+     state: present
+     regexp: 'whatever'
+     line: 'pacman   ALL=(ALL) NOPASSWD: /usr/bin/rm /etc/udev/rules.d/70-persistent-net.rules'
+
+  - name: provide password for admin1
+    shell: echo password.  | passwd --stdin admin1
+
+  - name: provide password for guest1
+    shell: echo password.   | passwd --stdin guest1
+
+  - name: provide password for guest2
+    shell: echo password.  | passwd --stdin guest2
+
+  - name: provide password for pacman
+    shell: echo password.  | passwd --stdin pacman
+
+  - name: locking guest1 account in default
+    shell: usermod -L guest1
+
+  - name: create /root/70prules.sh
+    file: path=/root/70prules.sh state=touch owner=root group=root mode=0755
+
+  - name: update /root/70prules.sh
+    blockinfile:
+      name: /root/70prules.sh
+      block: |
+
+        #checking eth2 and eth3
+        eth2=`cat /etc/udev/rules.d/70-persistent-net.rules | grep eth2 | wc -l`
+        eth3=`cat /etc/udev/rules.d/70-persistent-net.rules | grep eth3 | wc -l`
+
+        #delete 70-persistent-net.rules if eth2 and eth3 equal to one. will reboot after deleting
+        if [ $eth2 -eq 1 ] && [ $eth3 -eq 1 ]
+        then
+        rm -rf /etc/udev/rules.d/70-persistent-net.rules && reboot
+        fi
+
+  - name: checking if /etc/rc.d/rc.local.bckup exist
+    shell: test -f /etc/rc.d/rc.local.bckup
+    ignore_errors: true
+    register: rclocalbckup_exists
+    failed_when: rclocalbckup_exists.rc not in [0, 1]
+
+  - name: create /etc/rc.d/rc.local.bckup
+    shell: cat /etc/rc.d/rc.local > /etc/rc.d/rc.local.bckup
+    when: rclocalbckup_exists.rc == 1
+
+  - name: checking again if /etc/rc.d/rc.local.bckup exist
+    shell: test -f /etc/rc.d/rc.local.bckup
+    ignore_errors: true
+    register: rclocalbckupagain_exists
+    failed_when: rclocalbckupagain_exists.rc not in [0, 1]
+
+  - name: adding /root/70prules.sh into /etc/rc.d/rc.local
+    shell: echo "/root/70prules.sh" >> /etc/rc.d/rc.local
+    when: rclocalbckupagain_exists.rc == 0
+
