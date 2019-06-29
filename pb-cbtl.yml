@@ -1,0 +1,57 @@
+# set up app on node1, db on node2 and monitoring (prometheus & grafana in node3)
+# required host group (app, db, mon)
+
+
+##################################################################################
+
+- hosts: app
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+  - name: setup git
+    shell: mkdir git ; cd git ; git clone https://github.com/naimabdrahman/shell.git
+
+  - name: install package from git
+    shell: /root/git/shell/install-wordpress.sh
+
+  - name: restart httpd
+    shell: service httpd restart
+
+  - name: install other package
+    shell: yum -y install wget screen
+
+##################################################################################
+
+- hosts: db
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+  - name: setup git
+    shell: mkdir git; cd git; git clone https://github.com/naimabdrahman/shell.git; git clone https://github.com/naimabdrahman/db.git
+
+  - name: install package from git
+    shell: /root/git/shell/install-mariadb.sh
+
+  - name: install other package
+    shell: yum -y install wget screen
+
+##################################################################################
+
+- hosts: mon
+  #become: yes
+  #become_method: sudo
+
+  tasks:
+  - name: setup git
+    shell: mkdir git; cd git; git clone https://github.com/naimabdrahman/shell.git
+
+  - name: install package from git
+    shell: /root/git/shell/install-prometheus.sh
+
+  - name: install package from git
+    shell: /root/git/shell/install-grafana.sh
+
+  - name: install other package
+    shell: yum -y install wget screen
