@@ -3,5 +3,6 @@
 =========== example ===========
 
 [host]
-node1.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_password=<INSERT>
-node2.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_password=<INSERT>
+node1.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_pass=<INSERT>
+node2.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_pass=<INSERT>
+
