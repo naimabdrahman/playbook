@@ -5,4 +5,4 @@
 [host]
 node1.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_pass=<INSERT>
 node2.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_pass=<INSERT>
-
+node3.nar.test ansible_connection=ssh ansible_ssh_user=userwithsudo ansible_ssh_pass=<INSERT> ansible_sudo_pass=<INSERT>
