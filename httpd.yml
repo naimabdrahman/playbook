@@ -2,7 +2,11 @@
   #become: yes
   #become_method: sudo
   tasks:
-  - name: httpd is installed
+  - name: httpd installation - yes
     yum: name=httpd state=installed
-  - name: httpd is running and enabled
+    #yum: name=httpd state=absent
+                
+  - name: httpd service configuration - yes
     service: name=httpd state=started enabled=yes
+    #service: name=httpd state=stopped enabled=no
+
