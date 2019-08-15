@@ -1,8 +1,30 @@
 /etc/ansible/hosts <<== edit this file
 
-=========== example ===========
+## in line host and ansible ssh config 
+=========== example 1 ===========
 
 [host]
 node1.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_pass=<INSERT>
 node2.nar.test ansible_connection=ssh ansible_ssh_user=root ansible_ssh_pass=<INSERT>
 node3.nar.test ansible_connection=ssh ansible_ssh_user=userwithsudo ansible_ssh_pass=<INSERT> ansible_sudo_pass=<INSERT>
+
+
+
+
+
+
+
+## separated host and ansible ssh config (stored as variables)
+=========== example 2 ===========
+
+[host]
+node1.nar.test 
+node2.nar.test
+node3.nar.test
+
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=userwithsudo
+ansible_ssh_pass=<INSERT>
+ansible_sudo_pass=<INSERT>
