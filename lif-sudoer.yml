@@ -1,0 +1,11 @@
+- hosts: local
+  #become: yes
+  #become_method: sudo
+  tasks:
+  - name: Make sure group wheel is not in the sudoers configuration
+    lineinfile:
+      path: /root/testfile
+      state: present
+      regexp: '^%wheel\s'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
