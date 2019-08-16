@@ -1,0 +1,9 @@
+# include "included.yml" under the "tasks" directory
+
+- hosts: local
+  #become: yes
+  #become_method: sudo
+  tasks:
+    - include: /root/git/playbook/tasks/httpd-task-only.yml
+
+

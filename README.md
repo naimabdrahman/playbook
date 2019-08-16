@@ -8,3 +8,4 @@
 - dry run
 - variables management via host
 - fact gathering via setup
+- include other playbook via tasks
