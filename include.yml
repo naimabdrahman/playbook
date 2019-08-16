@@ -1,9 +1,13 @@
-# include "included.yml" under the "tasks" directory
+# include multiple yml files under the "tasks" directory
 
 - hosts: local
   #become: yes
   #become_method: sudo
   tasks:
     - include: /root/git/playbook/tasks/httpd-task-only.yml
+
+    - include: /root/git/playbook/tasks/inst-multi-pkg-tasks-only.yml
+      vars:
+        general_packages: vim-enhanced,wget,unzip
 
 
