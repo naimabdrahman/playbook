@@ -1,0 +1,18 @@
+# set boolean with failed_when
+# create "lalala" if result of boolean is "1"
+
+- hosts: local
+  #become: yes
+  #become_method: sudo
+  tasks:
+  - name: check if lalala exists or not
+    shell: test -f /root/lalala
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: create file lalala
+    shell: echo "lalala" > /root/lalala
+    when: file_exists.rc == 1
+
+
