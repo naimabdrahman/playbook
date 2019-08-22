@@ -19,6 +19,6 @@
 - name: put index.html
   copy: src=index.html dest=/var/www/html owner=root group=root mode=0644
 
-- name: check httpd
-  uri: url=http://"{{ ansible_fqdn }}"
+#- name: check httpd
+  #uri: url=http://"{{ ansible_fqdn }}"
 
