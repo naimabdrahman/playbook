@@ -28,3 +28,6 @@ you can also refer the variable in the templates below
                       register: ls
 
                     - debug: var=ls.stdout_lines
+                    
+                    
+                    
