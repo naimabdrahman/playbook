@@ -1,0 +1,10 @@
+https://medium.com/devops-process-and-tools/manage-secrets-with-ansible-vault-d0528b7a99f4
+
+you can also refer the variable in the templates below
+
+--- 
+- name: get the variables   
+  include_vars: /group_vars/splunk/variables.yml 
+  
+- name: change the splunk user passwd   
+  shell: /path/splunk — u {{ user }} -p {{ splunkpasswd }} 
