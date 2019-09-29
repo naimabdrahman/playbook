@@ -2,9 +2,29 @@ https://medium.com/devops-process-and-tools/manage-secrets-with-ansible-vault-d0
 
 you can also refer the variable in the templates below
 
---- 
+----------------------------------------------------------
+
+
 - name: get the variables   
   include_vars: /group_vars/splunk/variables.yml 
   
 - name: change the splunk user passwd   
   shell: /path/splunk — u {{ user }} -p {{ splunkpasswd }} 
+  
+  
+----------------------------------------------------------
+
+
+    - hosts: ans
+      become: yes
+      become_method : sudo
+
+      tasks:
+                    - name: vars ma dawg
+                      include_vars: /home/naim/extra_vars
+
+                    - name: Run ls on /root
+                      shell: ls /root
+                      register: ls
+
+                    - debug: var=ls.stdout_lines
