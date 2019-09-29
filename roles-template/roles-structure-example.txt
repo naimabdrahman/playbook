@@ -1,0 +1,25 @@
++--- playbook.yml                  +--- playbook_sample.yml
+|                                  |
++--- roles/                        +--- roles/
+     |                                  |
+     +--- role01/                       +--- ins_python_lib/
+          |                             |    |
+          +--- files/                   |    +--- vars/
+          |                             |    |    |
+          +--- templates/               |    |    +--- main.yml
+          |                             |    +--- tasks/
+          +--- tasks/                   |         |
+          |                             |         +--- main.yml
+          +--- handlers/                |
+          |                             +--- ins_httpd/
+          +--- vars/                              |
+          |                                       +--- files/
+          +--- defaults/                          |    |
+          |                                       |    +--- index.html
+          +--- meta/                              +--- vars/
+                                                  |    |
+                                                  |    +--- main.yml
+                                                  |
+                                                  +--- tasks/
+                                                       |
+                                                       +--- main.yml
