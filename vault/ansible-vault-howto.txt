@@ -1,0 +1,43 @@
+1) Create the ansible vault file (you can call it anything. Here, I'm calling it 'extra_vars'):
+     ansible-vault create extra_vars
+    
+     Set your vault password, and put in the following-
+      # if become (sudo) password
+      ansible_become_pass : <password>
+
+      # if regular ssh password
+      ansible_ssh_pass : <password>
+
+      Save the file. This is an encrypted file so you cannot vi into it. You can do the following:
+      #view
+       ansible-vault view extra_vars
+   
+      #edit
+       ansible-vault edit extra_vars
+
+
+2) Write the playbook (lets call it host.yaml):
+
+    - hosts: host1.example.com
+
+      vars_files:
+                    - extra_vars
+
+      tasks:
+                    - name: Run ls on /root
+                      shell: ls /root
+                      register: ls
+
+                    - debug: var=ls.stdout_lines
+
+
+3) Run the playbook as follows:
+
+    ansible-playbook mta.yaml --ask-vault-pass
+
+    Supply the vault password you set earlier. Your playbook should run successfully.
+    If you prefer the slightly lazy (insecure) way, you can put that vault password into a file and call it like this:
+
+    ansible-playbook mta.yaml --vault-password-file=vault.txt
+
+    The password should be a string stored as a single line in the file
