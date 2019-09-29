@@ -41,3 +41,7 @@
     ansible-playbook mta.yaml --vault-password-file=vault.txt
 
     The password should be a string stored as a single line in the file
+    
+  
+4) It is also possible to use alternative host as vault.
+
