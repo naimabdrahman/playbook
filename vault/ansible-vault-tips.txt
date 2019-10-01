@@ -31,3 +31,18 @@ you can also refer the variable in the templates below
                     
                     
                     
+----------------------------------------------------------                 
+                 
+- hosts: localhost
+
+  vars_files:
+    - vars/external_vars.yml
+
+  tasks:
+  - name: create testfile
+    file: path=/root/testfile state=touch owner=root group=root mode=0600         
+    
+    
+    
+    
+    
