@@ -14,6 +14,14 @@
    
       #edit
        ansible-vault edit extra_vars
+       
+       ---------------------template---------------------
+       
+          ansible_ssh_user: name
+          ansible_ssh_pass: password
+          ansible_become_pass: password
+       
+       --------------------------------------------------
 
 
 2) Write the playbook (lets call it host.yaml):
