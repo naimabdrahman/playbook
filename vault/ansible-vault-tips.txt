@@ -42,7 +42,19 @@ you can also refer the variable in the templates below
   - name: create testfile
     file: path=/root/testfile state=touch owner=root group=root mode=0600         
     
+
+----------------------------------------------------------                 
+
+
+directory layout    
     
-    
-    
+ansible-playbook playbook.yml -u someuser -i hosts --sudo --vault-password-file=vault.txt
+.
+|_ playbook.yml
+|_ secret
+|_ hosts
+|_ vault.txt
+
+
+     
     
