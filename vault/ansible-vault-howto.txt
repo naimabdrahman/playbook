@@ -27,6 +27,8 @@
 2) Write the playbook (lets call it host.yaml):
 
     - hosts: host1.example.com
+      become: yes
+      become_method: sudo
 
       vars_files:
                     - extra_vars
