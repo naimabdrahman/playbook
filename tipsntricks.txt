@@ -1,0 +1,2 @@
+## How to pass a user / password in ansible command 
+ansible all --inventory=10.0.1.2 -m ping --extra-vars "ansible_user=root ansible_password=yourpassword"
