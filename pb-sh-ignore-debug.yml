@@ -1,0 +1,18 @@
+- hosts: all
+  #become: yes
+  #become_method: sudo
+  tasks:
+  - name: lalala
+    shell: mkdir /root/git
+    ignore_errors: true
+    register: result
+  - debug:
+      var: result
+
+
+  - name: lalala
+    shell: uptime
+    register: resultuptime
+  - debug:
+      var: resultuptime
+
