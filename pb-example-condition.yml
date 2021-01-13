@@ -1,0 +1,19 @@
+## to use when ##
+
+
+---
+    - hosts: local
+      #become: yes
+      #become_method: sudo
+
+      #vars_files:
+      #              - extra_vars
+
+      tasks:
+                    - name: write variable
+                      shell: echo {{variable}} > /root/ansi/testfile
+                      ignore_errors: true
+                      when: "'localhost' in inventory_hostname"
+
+
+
