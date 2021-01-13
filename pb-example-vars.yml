@@ -1,0 +1,12 @@
+    - hosts: local
+      #become: yes
+      #become_method: sudo
+
+      #vars_files:
+      #              - extra_vars
+
+      tasks:
+                    - name: create testdir
+                      shell: mkdir /root/ansi/{{testdir}}
+                      ignore_errors: true
+
