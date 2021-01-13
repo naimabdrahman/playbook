@@ -1,0 +1,21 @@
+    - hosts: local
+      #become: yes
+      #become_method: sudo
+
+      #vars_files:
+      #              - extra_vars
+
+      tasks:
+                    - name: run ls on /root
+                      shell: ls /root
+                      register: ls
+
+                    - debug: var=ls.stdout_lines
+
+
+                    - name: run ls on /etc
+                      shell: ls /etc
+                      register: ls
+
+                    - debug: var=ls.stdout_lines
+
