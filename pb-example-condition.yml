@@ -15,5 +15,10 @@
                       ignore_errors: true
                       when: "'localhost' in inventory_hostname"
 
+      tasks:
+                    - name: write variable2
+                      shell: echo {{variable2}} > /root/ansi/testfile
+                      ignore_errors: true
+                      when: "'local' in group_names"
 
 
