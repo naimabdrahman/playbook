@@ -1,0 +1,18 @@
+ # set boolean with [failed_when],
+
+# create [testfile] if result of boolean is [1]
+
+- hosts: local
+  #become: yes
+  #become_method: sudo
+  tasks:
+  - name: index file exists or not
+    shell: test -f /root/testfile
+    ignore_errors: true
+    register: file_exists
+    failed_when: file_exists.rc not in [0, 1]
+
+  - name: put testfile
+    shell: echo "this is sparta" > /root/testfile
+    when: file_exists.rc == 1
+
